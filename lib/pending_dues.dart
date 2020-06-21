@@ -134,50 +134,87 @@ class _PendingDues extends State<PendingDues> {
                           padding: EdgeInsets.symmetric(
                               horizontal:
                                   MediaQuery.of(context).size.width / 130),
-                          width: MediaQuery.of(context).size.width / 8,
+                          width: MediaQuery.of(context).size.width / 7.5,
                           height: MediaQuery.of(context).size.width / 40,
                           decoration: BoxDecoration(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(4.0)),
                               border:
                                   Border.all(color: Colors.black87, width: 2)),
-                          child: yearDrop,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              yearDrop,
+                              SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width / 200),
+                              Text(yearValue == null ? '* Select' : '',
+                                  style: TextStyle(
+                                      color: Colors.red, fontSize: 18)),
+                            ],
+                          ),
                         ),
                         Container(
                           padding: EdgeInsets.symmetric(
                               horizontal:
                                   MediaQuery.of(context).size.width / 130),
-                          width: MediaQuery.of(context).size.width / 8,
+                          width: MediaQuery.of(context).size.width / 7.5,
                           height: MediaQuery.of(context).size.width / 40,
                           decoration: BoxDecoration(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(4.0)),
                               border:
                                   Border.all(color: Colors.black87, width: 2)),
-                          child: monthDrop,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              monthDrop,
+                              SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width / 200),
+                              Text(monthValue == null ? '* Select' : '',
+                                  style: TextStyle(
+                                      color: Colors.red, fontSize: 18)),
+                            ],
+                          ),
                         ),
                         Container(
                           padding: EdgeInsets.symmetric(
                               horizontal:
-                                  MediaQuery.of(context).size.width / 130),
-                          width: MediaQuery.of(context).size.width / 8,
+                                  MediaQuery.of(context).size.width / 130,
+                              vertical: 0),
+                          width: MediaQuery.of(context).size.width / 7.5,
                           height: MediaQuery.of(context).size.width / 40,
                           decoration: BoxDecoration(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(4.0)),
                               border:
                                   Border.all(color: Colors.black87, width: 2)),
-                          child: branchDrop,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              branchDrop,
+                              SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width / 200),
+                              Text(branchValue == null ? '* Select' : '',
+                                  style: TextStyle(
+                                      color: Colors.red, fontSize: 18)),
+                            ],
+                          ),
                         ),
                         inputBox(
-                            'Search Reg.no.',
-                            TextInputType.number,
-                            Icon(Icons.search,
-                                size: 28, color: Colors.black87)),
+                          'Search Reg.no.',
+                          TextInputType.number,
+                          Icon(Icons.search, size: 28, color: Colors.black87),
+                        ),
                       ],
                     ),
                     Container(
-                      height: size.height / 1.24,
+                      height: size.height / 1.25,
                       width: size.width,
                       child: tabledetails(),
                     ),
@@ -192,56 +229,94 @@ class _PendingDues extends State<PendingDues> {
   }
 
   chooseStream() {
-    if (rollNumCheck) {
-      //check = 0;
-      print(rollNumCheck);
-
-      return Firestore.instance
-          .collectionGroup('PendingDues')
-          .where("rollNum", isEqualTo: rollNumController.text)
-          .where("year", isEqualTo: yearValue)
-          .where("month", isEqualTo: monthValue)
-          .snapshots();
+    if (branchValue == null || monthValue == null || yearValue == null) {
+      return null;
     } else {
-      print(monthValue.toString() +
-          yearValue.toString() +
-          branchValue.toString());
-      if (branchValue == null && monthValue == null && yearValue == null ||
-          branchValue == null && monthValue == null && yearValue == 'ALL' ||
-          branchValue == null && monthValue == 'ALL' && yearValue == null ||
-          branchValue == 'ALL' && monthValue == null && yearValue == null)
+      if (rollNumCheck) {
+        //check = 0;
+        print(rollNumCheck);
+
         return Firestore.instance
             .collectionGroup('PendingDues')
-            .orderBy('rollNum', descending: false)
-            .snapshots();
-      if (branchValue == null && monthValue == null && yearValue != null)
-        return Firestore.instance
-            .collectionGroup('PendingDues')
-            .orderBy('rollNum', descending: false)
-            .where("year", isEqualTo: yearValue)
-            .snapshots();
-      if (branchValue != null && monthValue == null && yearValue == null)
-        return Firestore.instance
-            .collectionGroup('PendingDues')
-            .orderBy('rollNum', descending: false)
-            .where("branch", isEqualTo: branchValue)
-            .snapshots();
-      if (branchValue == null && monthValue != null && yearValue == null)
-        return Firestore.instance
-            .collectionGroup('PendingDues')
-            .orderBy('rollNum', descending: false)
-            .where("month", isEqualTo: monthValue)
-            .snapshots();
-      if (branchValue != null || monthValue != null || yearValue != null)
-        return Firestore.instance
-            .collectionGroup('PendingDues')
-            .orderBy('rollNum', descending: false)
+            .where("rollNum", isEqualTo: rollNumController.text)
             .where("year", isEqualTo: yearValue)
             .where("month", isEqualTo: monthValue)
-            .where("branch", isEqualTo: branchValue)
             .snapshots();
-      /*else
-        return Firestore.instance.collectionGroup('PendingDues').snapshots();*/
+      } else {
+        if (yearValue == 'ALL' && monthValue == 'ALL' && branchValue == 'ALL') {
+          print('1');
+          return Firestore.instance
+              .collectionGroup('PendingDues')
+              .orderBy('rollNum', descending: false)
+              .snapshots();
+        } else if (yearValue == 'ALL' &&
+            monthValue == 'ALL' &&
+            branchValue != null) {
+          print('2');
+          return Firestore.instance
+              .collectionGroup('PendingDues')
+              .orderBy('rollNum', descending: false)
+              .where("branch", isEqualTo: branchValue)
+              .snapshots();
+        } else if (yearValue == 'ALL' &&
+            monthValue != null &&
+            branchValue == 'ALL') {
+          print('3');
+          return Firestore.instance
+              .collectionGroup('PendingDues')
+              .orderBy('rollNum', descending: false)
+              .where("month", isEqualTo: monthValue)
+              .snapshots();
+        } else if (yearValue != null &&
+            monthValue == 'ALL' &&
+            branchValue == 'ALL') {
+          print('4');
+          return Firestore.instance
+              .collectionGroup('PendingDues')
+              .orderBy('rollNum', descending: false)
+              .where("year", isEqualTo: yearValue)
+              .snapshots();
+        } else if (yearValue != null &&
+            monthValue != null &&
+            branchValue == 'ALL') {
+          print('5');
+          return Firestore.instance
+              .collectionGroup('PendingDues')
+              .orderBy('rollNum', descending: false)
+              .where("year", isEqualTo: yearValue)
+              .where("month", isEqualTo: monthValue)
+              .snapshots();
+        } else if (yearValue != null &&
+            monthValue == 'ALL' &&
+            branchValue != null) {
+          print('6');
+          return Firestore.instance
+              .collectionGroup('PendingDues')
+              .orderBy('rollNum', descending: false)
+              .where("year", isEqualTo: yearValue)
+              .where("branch", isEqualTo: branchValue)
+              .snapshots();
+        } else if (yearValue == 'ALL' &&
+            monthValue != null &&
+            branchValue != null) {
+          print('7');
+          return Firestore.instance
+              .collectionGroup('PendingDues')
+              .orderBy('rollNum', descending: false)
+              .where("month", isEqualTo: monthValue)
+              .where("branch", isEqualTo: branchValue)
+              .snapshots();
+        } else {
+          print('8');
+          return Firestore.instance
+              .collectionGroup('PendingDues')
+              .orderBy('rollNum', descending: false)
+              .where("year", isEqualTo: yearValue)
+              .where("month", isEqualTo: monthValue)
+              .where("branch", isEqualTo: branchValue)
+              .snapshots();
+        }
+      }
     }
   }
   //datatable
@@ -260,8 +335,16 @@ class _PendingDues extends State<PendingDues> {
       child: StreamBuilder<QuerySnapshot>(
         stream: chooseStream(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          print('Error: ${snapshot.error}');
-
+          if (!snapshot.hasData) {
+            return Center(
+                child: Padding(
+              padding: const EdgeInsets.all(100.0),
+              child: Text(
+                'Data not Found',
+                style: TextStyle(fontSize: 30, color: Colors.red),
+              ),
+            ));
+          }
           if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
@@ -273,6 +356,7 @@ class _PendingDues extends State<PendingDues> {
                   getDataColumn('Sl.No.'),
                   getDataColumn('Name'),
                   getDataColumn('Roll Number'),
+                  getDataColumn('Branch'),
                   getDataColumn('Amount'),
                   getDataColumn('Amount Per Day'),
                   getDataColumn('Bill Date'),
@@ -365,6 +449,11 @@ class DTSStuRec extends DataTableSource {
           d[index]['rollNum'] == null
               ? Text('No Data')
               : Text(d[index]['rollNum'], style: Style.cellStyle),
+        ),
+        DataCell(
+          d[index]['branch'] == null
+              ? Text('No Data')
+              : Text(d[index]['branch'], style: Style.cellStyle),
         ),
         DataCell(d[index]['amount'] == null
             ? Text('No Data')

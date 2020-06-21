@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gcetjmfee_webappv2/stu_record.dart';
 import 'package:gcetjmfee_webappv2/style.dart';
 import 'package:gcetjmfee_webappv2/title.dart';
-import 'package:gcetjmfee_webappv2/uiScreen.dart';
 
 class StudentDetails extends StatefulWidget {
   DocumentSnapshot d;
@@ -22,14 +22,18 @@ class _StudentDetailsState extends State<StudentDetails> {
     Size size = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: () async => Navigator.push(
-          context, MaterialPageRoute(builder: (context) => new UIScreen())),
+        context,
+        PageRouteBuilder(
+          pageBuilder: (context, animation1, animation2) => StudentRecord(),
+        ),
+      ),
       child: Scaffold(
         body: Container(
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                title(size, 'Home Page', context),
+                title(size, d['sName'], context),
                 Container(
                   height: size.height / 1.24,
                   width: size.width,

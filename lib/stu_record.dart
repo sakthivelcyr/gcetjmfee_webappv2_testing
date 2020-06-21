@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:gcetjmfee_webappv2/title.dart';
 import 'package:gcetjmfee_webappv2/view_details.dart';
 import './style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -77,51 +78,69 @@ class _StudentRecord extends State<StudentRecord> {
 
     Size size = MediaQuery.of(context).size;
 
-    return Column(
-      children: <Widget>[
-        Container(
-          width: size.width,
-          height: size.height - size.height / 10,
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+    return Scaffold(
+      body: Container(
+        child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.width / 130),
-                    width: MediaQuery.of(context).size.width / 8,
-                    height: MediaQuery.of(context).size.width / 40,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                        border: Border.all(color: Colors.black87, width: 2)),
-                    child: batchDrop,
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.width / 130),
-                    width: MediaQuery.of(context).size.width / 8,
-                    height: MediaQuery.of(context).size.width / 40,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                        border: Border.all(color: Colors.black87, width: 2)),
-                    child: branchDrop,
-                  ),
-                  inputBox('Search Reg.no.', TextInputType.number,
-                      Icon(Icons.search, size: 28, color: Colors.black87)),
-                ],
-              ),
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              title(size, 'Home Page', context),
               Container(
-                height: size.height / 1.24,
                 width: size.width,
-                child: tabledetails(),
+                height: size.height - size.height / 10,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal:
+                                  MediaQuery.of(context).size.width / 130),
+                          width: MediaQuery.of(context).size.width / 8,
+                          height: MediaQuery.of(context).size.width / 40,
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(4.0)),
+                              border:
+                                  Border.all(color: Colors.black87, width: 2)),
+                          child: batchDrop,
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal:
+                                  MediaQuery.of(context).size.width / 130),
+                          width: MediaQuery.of(context).size.width / 8,
+                          height: MediaQuery.of(context).size.width / 40,
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(4.0)),
+                              border:
+                                  Border.all(color: Colors.black87, width: 2)),
+                          child: branchDrop,
+                        ),
+                        inputBox(
+                            'Search Reg.no.',
+                            TextInputType.number,
+                            Icon(Icons.search,
+                                size: 28, color: Colors.black87)),
+                      ],
+                    ),
+                    Container(
+                      height: size.height / 1.24,
+                      width: size.width,
+                      child: tabledetails(),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
-        )
-      ],
+        ),
+      ),
     );
   }
 
@@ -279,7 +298,10 @@ class DTSStuRec extends DataTableSource {
         if (selected)
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => StudentDetails(d[index])),
+            PageRouteBuilder(
+              pageBuilder: (context, animation1, animation2) =>
+                  StudentDetails(d[index]),
+            ),
           );
       },
       cells: [

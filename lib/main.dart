@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:gcetjmfee_webappv2/pending_dues.dart';
+import 'package:gcetjmfee_webappv2/stu_record.dart';
 import 'package:gcetjmfee_webappv2/style.dart';
-import 'package:gcetjmfee_webappv2/uiScreen.dart';
 
 void main() {
   runApp(MyApp());
 }
+
+String errtxt = '';
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -17,7 +20,7 @@ class MyApp extends StatelessWidget {
         // primarySwatch: Colors.black,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: UIScreen(),
+      home: MyHomePage(),
     );
   }
 }
@@ -27,10 +30,56 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+String password = '';
+
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    TextEditingController pass = TextEditingController();
+
+    String validatePassword(String value) {
+      if (value != 'gcetj123') {
+        return "Password wrong";
+      }
+      return null;
+    }
+
+    Widget inputBox(String label, TextInputType t, Icon icon) {
+      return Container(
+        width: MediaQuery.of(context).size.width / 8,
+        height: MediaQuery.of(context).size.width / 40,
+        child: TextFormField(
+          keyboardType: t,
+          controller: pass,
+          autofocus: false,
+          onChanged: (value) {
+            print(value);
+            password = value;
+          },
+          style: TextStyle(color: Colors.white),
+          obscureText: true,
+          decoration: InputDecoration(
+            //errorText: validatePassword(pass.text),
+            //errorText: (validator) ? 'Password Wrong' : '',
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(4.0)),
+              borderSide: BorderSide(color: Colors.white, width: 2),
+            ),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                borderSide: BorderSide(color: Colors.white, width: 3)),
+            labelText: label,
+            hintText: label,
+
+            labelStyle: TextStyle(color: Colors.white),
+            suffixIcon: icon,
+          ),
+          cursorColor: Colors.pink,
+          showCursor: true,
+        ),
+      );
+    }
 
     return Scaffold(
       body: Container(
@@ -71,6 +120,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
+                    inputBox('Password', TextInputType.number,
+                        Icon(Icons.person, size: 28, color: Colors.white)),
+                    SizedBox(width: MediaQuery.of(context).size.width / 80),
                     MaterialButton(
                       child: Text('Get Start',
                           style: TextStyle(
@@ -83,19 +135,29 @@ class _MyHomePageState extends State<MyHomePage> {
                         borderRadius: BorderRadius.circular(50.0),
                       ),
                       onPressed: () {
-                        setState(
-                          () {
-                            print("get start is pressed");
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => UIScreen()));
-                          },
-                        );
+                        setState(() {
+                          errtxt = '';
+                        });
+                        if (password == 'gcetj123')
+                          Navigator.pushReplacement(
+                            context,
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation1, animation2) =>
+                                  StudentRecord(),
+                            ),
+                          );
+                        else
+                          setState(() {
+                            errtxt = 'Password Wrong';
+                          });
                       },
                     ),
                   ],
                 ),
+              ),
+              SizedBox(height: MediaQuery.of(context).size.width / 80),
+              Center(
+                child: Text(errtxt, style: TextStyle(color: Colors.red)),
               ),
             ],
           ),

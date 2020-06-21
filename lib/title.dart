@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gcetjmfee_webappv2/pay_his.dart';
 import 'package:gcetjmfee_webappv2/pending_dues.dart';
-import 'package:gcetjmfee_webappv2/uiScreen.dart';
+import 'package:gcetjmfee_webappv2/stu_record.dart';
+
 import './style.dart';
 
 Widget title(Size size, String head, BuildContext context) {
@@ -41,7 +42,7 @@ Widget title(Size size, String head, BuildContext context) {
                     context,
                     PageRouteBuilder(
                       pageBuilder: (context, animation1, animation2) =>
-                          UIScreen(),
+                          StudentRecord(),
                     ),
                   ),
                 },
