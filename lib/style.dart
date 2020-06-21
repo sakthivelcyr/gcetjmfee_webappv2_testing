@@ -33,4 +33,9 @@ abstract class Style {
     color: Colors.black,
     fontWeight: FontWeight.bold,
   );
+  static const TextStyle detailsHeadStyle = TextStyle(
+    fontWeight: FontWeight.bold,
+    fontSize: 20,
+    color: Colors.black,
+  );
 }

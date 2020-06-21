@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:gcetjmfee_webappv2/view_details.dart';
 import './style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -134,34 +135,40 @@ class _StudentRecord extends State<StudentRecord> {
           .where("rollNum", isEqualTo: rollNumController.text)
           .snapshots();
     } else {
-      if (branchValue == null ||
-          batchValue == null ||
-          batchValue == 'ALL' && branchValue == 'ALL')
+      if (branchValue == null && batchValue == null ||
+          branchValue == null && batchValue == 'ALL' ||
+          branchValue == 'ALL' && batchValue == null ||
+          batchValue == 'ALL' && branchValue == 'ALL') {
+        print('1');
         return Firestore.instance
             .collectionGroup('Profile')
             .orderBy('rollNum', descending: false)
             .snapshots();
-      if (branchValue != null && batchValue == 'ALL' ||
-          branchValue != null && batchValue == null)
+      } else if (branchValue != null && batchValue == 'ALL' ||
+          branchValue != null && batchValue == null) {
+        print('2');
         return Firestore.instance
             .collectionGroup('Profile')
             .orderBy('rollNum', descending: false)
             .where("branch", isEqualTo: branchValue)
             .snapshots();
-      if (batchValue != null && branchValue == 'ALL' ||
-          batchValue != null && branchValue == null)
+      } else if (batchValue != null && branchValue == 'ALL' ||
+          batchValue != null && branchValue == null) {
+        print(3);
         return Firestore.instance
             .collectionGroup('Profile')
             .orderBy('rollNum', descending: false)
             .where("batch", isEqualTo: batchValue)
             .snapshots();
-      else
+      } else {
+        print('4');
         return Firestore.instance
             .collectionGroup('Profile')
             .orderBy('rollNum', descending: false)
             .where("branch", isEqualTo: branchValue)
             .where("batch", isEqualTo: batchValue)
             .snapshots();
+      }
     }
   }
   //datatable
@@ -189,6 +196,7 @@ class _StudentRecord extends State<StudentRecord> {
             default:
               return new PaginatedDataTable(
                 header: Text('Students Records', style: Style.headStyle),
+                showCheckboxColumn: false,
                 columns: [
                   getDataColumn('Sl.No.'),
                   getDataColumn('Name'),
@@ -197,15 +205,10 @@ class _StudentRecord extends State<StudentRecord> {
                   getDataColumn('Gender'),
                   getDataColumn('DOB'),
                   getDataColumn('Blood Group'),
-                  getDataColumn('Address'),
-                  getDataColumn('Mobile Number'),
                   getDataColumn('Batch'),
                   getDataColumn('Branch'),
-                  getDataColumn('Guardian Name'),
-                  getDataColumn('Guardian Mobile Number'),
-                  getDataColumn('Guardian Address'),
                 ],
-                source: DTSStuRec(snapshot.data.documents),
+                source: DTSStuRec(snapshot.data.documents, context),
                 rowsPerPage: 12,
               );
           }
@@ -265,15 +268,25 @@ class _StudentRecord extends State<StudentRecord> {
 
 class DTSStuRec extends DataTableSource {
   final List<DocumentSnapshot> d;
+  final BuildContext context;
 
-  DTSStuRec(this.d);
-
+  DTSStuRec(this.d, this.context);
   @override
   DataRow getRow(int index) {
     return DataRow.byIndex(
       index: index,
+      onSelectChanged: (bool selected) {
+        if (selected)
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => StudentDetails(d[index])),
+          );
+      },
       cells: [
-        DataCell(Text('${index + 1}')),
+        DataCell(Text(
+          '${index + 1}',
+          style: Style.cellStyle,
+        )),
         DataCell(
           d[index]['sName'] == null
               ? Text('No Data')
@@ -303,16 +316,6 @@ class DTSStuRec extends DataTableSource {
               : Text(d[index]['sBG'], style: Style.cellStyle),
         ),
         DataCell(
-          d[index]['sAddress'] == null
-              ? Text('No Data')
-              : Text(d[index]['sAddress'], style: Style.cellStyle),
-        ),
-        DataCell(
-          d[index]['sMobNum'] == null
-              ? Text('No Data')
-              : Text(d[index]['sMobNum'], style: Style.cellStyle),
-        ),
-        DataCell(
           d[index]['batch'] == null
               ? Text('No Data')
               : Text(d[index]['batch'], style: Style.cellStyle),
@@ -321,21 +324,6 @@ class DTSStuRec extends DataTableSource {
           d[index]['branch'] == null
               ? Text('No Data')
               : Text(d[index]['branch'], style: Style.cellStyle),
-        ),
-        DataCell(
-          d[index]['gName'] == null
-              ? Text('No Data')
-              : Text(d[index]['gName'], style: Style.cellStyle),
-        ),
-        DataCell(
-          d[index]['gMobNum'] == null
-              ? Text('No Data')
-              : Text(d[index]['gMobNum'], style: Style.cellStyle),
-        ),
-        DataCell(
-          d[index]['gAddress'] == null
-              ? Text('No Data')
-              : Text(d[index]['gAddress'], style: Style.cellStyle),
         ),
       ],
     );

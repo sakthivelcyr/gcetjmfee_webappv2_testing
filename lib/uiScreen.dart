@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gcetjmfee_webappv2/pay_his.dart';
+import 'package:gcetjmfee_webappv2/pending_dues.dart';
 import 'package:gcetjmfee_webappv2/stu_record.dart';
 import 'package:gcetjmfee_webappv2/style.dart';
 import 'package:gcetjmfee_webappv2/title.dart';
@@ -15,7 +17,7 @@ class UIScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              title(size, 'Home Page'),
+              title(size, 'Home Page', context),
               StudentRecord(),
             ],
           ),

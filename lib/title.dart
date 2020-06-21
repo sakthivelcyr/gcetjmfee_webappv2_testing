@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:gcetjmfee_webappv2/pay_his.dart';
+import 'package:gcetjmfee_webappv2/pending_dues.dart';
+import 'package:gcetjmfee_webappv2/uiScreen.dart';
 import './style.dart';
 
-Widget title(Size size, String head) {
+Widget title(Size size, String head, BuildContext context) {
   return Container(
     color: Colors.black87,
     width: size.width,
@@ -34,36 +37,54 @@ Widget title(Size size, String head) {
                     borderRadius: BorderRadius.circular(10.0)),
                 splashColor: Colors.white,
                 onPressed: () => {
-                  print('home is pressed'),
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation1, animation2) =>
+                          UIScreen(),
+                    ),
+                  ),
                 },
               ),
               FlatButton(
                 child: Text(
-                  'Status',
+                  'Payment History',
                   style: Style.substyle,
                 ),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0)),
                 splashColor: Colors.white,
                 onPressed: () => {
-                  print('Status is pressed'),
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation1, animation2) =>
+                          PaymentHistory(),
+                    ),
+                  ),
                 },
               ),
               FlatButton(
                 child: Text(
-                  'Verify',
+                  'Pending Dues',
                   style: Style.substyle,
                 ),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0)),
                 splashColor: Colors.white,
                 onPressed: () => {
-                  print('verify is pressed'),
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation1, animation2) =>
+                          PendingDues(),
+                    ),
+                  ),
                 },
               ),
               FlatButton(
                 child: Text(
-                  'About',
+                  'Verification',
                   style: Style.substyle,
                 ),
                 shape: RoundedRectangleBorder(
