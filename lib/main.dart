@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'GCE TJ - MESSFEE SYSTEM',
+      title: 'GCETJ - MESSFEE SYSTEM',
       theme: ThemeData(
         // primarySwatch: Colors.black,
         visualDensity: VisualDensity.adaptivePlatformDensity,
