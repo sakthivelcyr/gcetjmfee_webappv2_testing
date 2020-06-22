@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gcetjmfee_webappv2/gen_bill.dart';
 import 'package:gcetjmfee_webappv2/pay_his.dart';
 import 'package:gcetjmfee_webappv2/pending_dues.dart';
 import 'package:gcetjmfee_webappv2/stu_record.dart';
@@ -9,12 +10,12 @@ Widget title(Size size, String head, BuildContext context) {
   return Container(
     color: Colors.black87,
     width: size.width,
-    height: size.height / 11,
+    height: size.height / 10,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Container(
-          width: size.width / 1.5,
+          width: size.width / 2,
           padding: const EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -25,7 +26,7 @@ Widget title(Size size, String head, BuildContext context) {
           ),
         ),
         Container(
-          width: size.width - size.width / 1.5,
+          width: size.width - size.width / 1.6,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
@@ -43,6 +44,24 @@ Widget title(Size size, String head, BuildContext context) {
                     PageRouteBuilder(
                       pageBuilder: (context, animation1, animation2) =>
                           StudentRecord(),
+                    ),
+                  ),
+                },
+              ),
+              FlatButton(
+                child: Text(
+                  'Generate Bill',
+                  style: Style.substyle,
+                ),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0)),
+                splashColor: Colors.white,
+                onPressed: () => {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation1, animation2) =>
+                          GenerateBill(),
                     ),
                   ),
                 },
